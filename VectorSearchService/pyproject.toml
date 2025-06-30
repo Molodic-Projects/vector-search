@@ -3,8 +3,7 @@ name = "vector-search"
 version = "0.1.0"
 description = "FastAPI vector search with pgvector and OpenAI embeddings"
 authors = ["Your Name <your.email@example.com>"]
-readme = "README.md"
-packages = [{include = "app"}]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"

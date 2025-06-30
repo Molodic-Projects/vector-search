@@ -8,8 +8,12 @@ ENV POETRY_NO_INTERACTION=1 \
 
 WORKDIR /app
 COPY pyproject.toml poetry.lock* ./
-RUN poetry install --only=main && rm -rf $POETRY_CACHE_DIR
 
+# Install dependencies and ensure they're available
+RUN poetry install --only=main --no-root
+
+# Copy application code
 COPY . .
+
 EXPOSE 8000
 CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"] 

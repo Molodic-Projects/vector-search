@@ -1,25 +1,50 @@
-# Vector Search API
+# Vector Search Application
 
-A FastAPI-based vector search application using OpenAI embeddings and pgvector for semantic document search and retrieval.
+A full-stack vector search application with a FastAPI backend using OpenAI embeddings and pgvector for semantic document search and retrieval.
 
 ## Features
 
+### Backend (VectorSearchService)
 - **Document Embedding**: Store text documents with OpenAI embeddings
 - **Semantic Search**: Find similar documents using vector similarity
 - **PostgreSQL + pgvector**: Efficient vector storage and retrieval
 - **FastAPI**: Modern, fast web API with automatic documentation
 - **Poetry**: Modern Python dependency management
 
+### Frontend (Coming Soon)
+- **Modern Web Interface**: React-based frontend for document management
+- **Search Interface**: User-friendly search and results display
+- **Document Upload**: Easy document upload and management
+
+## Project Structure
+
+```
+vector-search/
+├── VectorSearchService/     # Backend API service
+│   ├── app/
+│   │   └── main.py         # FastAPI application
+│   ├── pyproject.toml      # Poetry configuration & dependencies
+│   ├── poetry.lock         # Locked dependency versions
+│   ├── Dockerfile          # Backend container
+│   ├── env.example         # Environment variables template
+│   └── .env                # Environment variables (create from env.example)
+├── FrontEnd/               # Frontend web application (coming soon)
+├── docker-compose.yml      # Docker services orchestration
+├── LICENSE                 # Project license
+└── README.md              # This file
+```
+
 ## Prerequisites
 
 - Python 3.11+
 - Docker and Docker Compose
 - OpenAI API key
-- Poetry (for dependency management)
+- Poetry (for backend development)
+- Node.js and npm (for frontend development - when implemented)
 
 ## Quick Start
 
-### 1. Install Poetry
+### 1. Install Poetry (for backend development)
 
 ```bash
 # Install Poetry (choose one method)
@@ -34,68 +59,68 @@ pipx install poetry
 git clone <your-repo-url>
 cd vector-search
 
-# Install dependencies (creates virtual environment automatically)
+# Navigate to backend service and install dependencies
+cd VectorSearchService
 poetry install
 ```
 
 ### 3. Environment Setup
 
-Create a `.env` file in the project root by copying the example:
+Create a `.env` file in the VectorSearchService directory:
 
 ```bash
-# Copy the template
+# From the VectorSearchService directory
 cp env.example .env
 
 # Edit .env and replace with your actual OpenAI API key
-# Your .env file should look like:
 ```
 
+Your `.env` file should look like:
 ```env
 OPENAI_API_KEY=sk-proj-your-actual-api-key-here
 ```
 
 **Important**: The `.env` file is automatically ignored by git for security.
 
-### 4. Choose Your Development Approach
+### 4. Development Workflow
 
-**Option A: Activate Virtual Environment (Recommended for Development)**
+**Backend Development (VectorSearchService):**
+
 ```bash
-# Activate Poetry's virtual environment once
+# Navigate to backend service
+cd VectorSearchService
+
+# Activate Poetry's virtual environment
 poetry shell
 
-# Now run commands directly (faster for development)
-uvicorn app.main:app --reload
-```
-
-**Option B: Use Poetry Run (Good for CI/CD and One-off Commands)**
-```bash
-# Run commands through Poetry (no activation needed)
-poetry run uvicorn app.main:app --reload
-```
-
-### 5. Start Services
-
-```bash
-# Start PostgreSQL with pgvector
+# Start the database
+cd ..  # Back to project root
 docker-compose up db -d
 
-# Start the FastAPI application (choose based on your approach above)
-
-# If using activated shell (poetry shell):
+# Return to backend directory and start the API
+cd VectorSearchService
 uvicorn app.main:app --reload
+```
 
-# If using poetry run:
+**Alternative - Using Poetry Run:**
+```bash
+# From VectorSearchService directory
 poetry run uvicorn app.main:app --reload
 ```
 
-### 6. Using Docker (Alternative)
+### 5. Using Docker (Full Stack)
 
 ```bash
-# Start everything with Docker
+# From project root
 docker-compose up --build
 ```
 
-## API Usage
+This will start:
+- PostgreSQL database with pgvector extension
+- FastAPI backend service
+- (Frontend service will be added here in the future)
+
+## Backend API Usage
 
 The API will be available at `http://localhost:8000`
 
@@ -122,111 +147,84 @@ curl -X POST "http://localhost:8000/search" \
 
 ## Development
 
-### Virtual Environment Workflow
+### Backend Development (VectorSearchService)
 
 **For Active Development (Recommended):**
 ```bash
-# One-time setup
+# From VectorSearchService directory
 poetry install
-poetry shell                    # Activate virtual environment
+poetry shell                              # Activate virtual environment
 
 # Daily development (run directly)
-uvicorn app.main:app --reload   # Start dev server
-black .                         # Format code
-ruff check .                    # Lint code
-pytest                          # Run tests
-python                          # Interactive Python
+uvicorn app.main:app --reload             # Start dev server
+black .                                   # Format code
+ruff check .                              # Lint code
+pytest                                    # Run tests
+python                                    # Interactive Python
 
 # When done developing
-exit                            # Deactivate virtual environment
+exit                                      # Deactivate virtual environment
 ```
 
 **For Scripts/CI/CD:**
 ```bash
-# No activation needed - run everything through poetry
+# From VectorSearchService directory - no activation needed
 poetry run uvicorn app.main:app --reload
 poetry run black .
 poetry run ruff check .
 poetry run pytest
 ```
 
-### Poetry Commands
+### Frontend Development (Coming Soon)
 
+The frontend will be developed using modern web technologies:
+- **React**: Modern frontend framework
+- **TypeScript**: Type-safe JavaScript
+- **Tailwind CSS**: Utility-first CSS framework
+- **Vite**: Fast build tool and dev server
+
+Development commands (when implemented):
 ```bash
-# Install dependencies
-poetry install
-
-# Add new dependency
-poetry add package-name
-poetry add --group dev package-name  # dev dependency
-
-# Update dependencies
-poetry update
-
-# Remove dependency
-poetry remove package-name
-
-# Show dependency tree
-poetry show --tree
-
-# Check virtual environment info
-poetry env info
-
-# Export requirements (for Docker/CI)
-poetry export -f requirements.txt --output requirements.txt
+# From FrontEnd directory
+npm install                    # Install dependencies
+npm run dev                    # Start development server
+npm run build                  # Build for production
+npm run test                   # Run tests
 ```
 
-### Development Tools
+### Poetry Commands (Backend)
+
+```bash
+# From VectorSearchService directory
+poetry install                            # Install dependencies
+poetry add package-name                   # Add new dependency
+poetry add --group dev package-name       # Add dev dependency
+poetry update                             # Update dependencies
+poetry remove package-name                # Remove dependency
+poetry show --tree                        # Show dependency tree
+poetry env info                           # Check virtual environment info
+```
+
+### Development Tools (Backend)
 
 **If you activated the shell (`poetry shell`):**
 ```bash
-# Format code
-black .
-
-# Lint code
-ruff check .
-
-# Type checking
-mypy app/
-
-# Run tests
-pytest
-
-# Run all checks
-black . && ruff check . && mypy app/
+# From VectorSearchService directory
+black .                                   # Format code
+ruff check .                              # Lint code
+mypy app/                                 # Type checking
+pytest                                    # Run tests
+black . && ruff check . && mypy app/      # Run all checks
 ```
 
 **If using poetry run:**
 ```bash
-# Format code
+# From VectorSearchService directory
 poetry run black .
-
-# Lint code
 poetry run ruff check .
-
-# Type checking
 poetry run mypy app/
-
-# Run tests
 poetry run pytest
-
-# Run all checks
 poetry run black . && poetry run ruff check . && poetry run mypy app/
-```
-
-### Project Structure
-
-```
-vector-search/
-├── app/
-│   └── main.py          # FastAPI application
-├── pyproject.toml       # Poetry configuration & dependencies
-├── poetry.lock          # Locked dependency versions
-├── docker-compose.yml   # Docker services
-├── Dockerfile          # Application container
-├── env.example         # Environment variables template
-├── .env                # Environment variables (create from env.example)
-└── README.md           # This file
 ```
 
 ## API Reference
@@ -262,14 +260,14 @@ vector-search/
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `OPENAI_API_KEY` | OpenAI API key for embeddings | Yes |
+| Variable | Description | Required | Location |
+|----------|-------------|----------|----------|
+| `OPENAI_API_KEY` | OpenAI API key for embeddings | Yes | VectorSearchService/.env |
 
 ### Database Configuration
 
 The application connects to PostgreSQL with these defaults:
-- **Host**: localhost
+- **Host**: localhost (db when using Docker)
 - **Database**: vectordb
 - **User**: vectordb
 - **Password**: secret
@@ -277,10 +275,10 @@ The application connects to PostgreSQL with these defaults:
 
 ## Deployment
 
-### Using Docker Compose
+### Using Docker Compose (Recommended)
 
 ```bash
-# Production deployment
+# From project root
 docker-compose up -d
 
 # View logs
@@ -289,11 +287,21 @@ docker-compose logs -f app
 
 ### Manual Deployment
 
+**Backend Only:**
 ```bash
-# Install production dependencies only
+# From VectorSearchService directory
 poetry install --only=main
+poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
 
-# Run with production server
+**Full Stack (when frontend is implemented):**
+```bash
+# Build frontend
+cd FrontEnd
+npm run build
+
+# Start backend
+cd ../VectorSearchService
 poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
@@ -302,7 +310,7 @@ poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000
 ### Common Issues
 
 1. **OpenAI API Key Error**
-   - Ensure `OPENAI_API_KEY` is set in your environment
+   - Ensure `OPENAI_API_KEY` is set in `VectorSearchService/.env`
    - Check that your API key is valid and has credits
 
 2. **Database Connection Error**
@@ -313,31 +321,62 @@ poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000
    - Try alternative installation methods from [Poetry docs](https://python-poetry.org/docs/#installation)
    - Ensure Python 3.11+ is installed
 
+4. **Path Issues**
+   - Ensure you're in the correct directory (`VectorSearchService` for backend commands)
+   - Check that the virtual environment is activated when needed
+
 ### Useful Commands
 
 ```bash
 # Check Poetry installation
 poetry --version
 
-# Check Python version
+# Check Python version (from VectorSearchService directory)
 python --version
 
-# Check Docker services
+# Check Docker services (from project root)
 docker-compose ps
 
 # View database logs
 docker-compose logs db
 
+# View backend logs
+docker-compose logs app
+
 # Reset database
 docker-compose down -v && docker-compose up db -d
 ```
+
+## Development Roadmap
+
+### ✅ Completed
+- [x] Backend API with FastAPI
+- [x] Vector search with OpenAI embeddings
+- [x] PostgreSQL + pgvector integration
+- [x] Docker containerization
+- [x] API documentation
+
+### 🚧 In Progress
+- [ ] Frontend web application
+- [ ] User authentication
+- [ ] File upload functionality
+- [ ] Batch document processing
+
+### 📋 Planned
+- [ ] Advanced search filters
+- [ ] Document management interface
+- [ ] Search result highlighting
+- [ ] Export functionality
+- [ ] API rate limiting
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes
-4. Run tests and linting: `poetry run pytest && poetry run black . && poetry run ruff check .`
+3. Make your changes in the appropriate service directory
+4. Run tests and linting:
+   - Backend: `cd VectorSearchService && poetry run pytest && poetry run black . && poetry run ruff check .`
+   - Frontend: `cd FrontEnd && npm test && npm run lint` (when implemented)
 5. Commit your changes: `git commit -am 'Add feature'`
 6. Push to the branch: `git push origin feature-name`
 7. Create a Pull Request
@@ -348,10 +387,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Tech Stack
 
+### Backend
 - **FastAPI**: Modern Python web framework
 - **OpenAI**: Text embeddings generation
 - **PostgreSQL**: Primary database
 - **pgvector**: Vector similarity search
 - **Poetry**: Dependency management
 - **Docker**: Containerization
-- **Pydantic**: Data validation 
+- **Pydantic**: Data validation
+
+### Frontend (Coming Soon)
+- **React**: Frontend framework
+- **TypeScript**: Type-safe JavaScript
+- **Tailwind CSS**: Utility-first CSS
+- **Vite**: Build tool and dev server 

@@ -10,7 +10,7 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Connect to database
-conn = psycopg.connect("dbname=vectordb user=vectordb password=secret host=localhost")
+conn = psycopg.connect("dbname=vectordb user=vectordb password=secret host=db")
 
 # Setup database schema FIRST
 with conn.cursor() as cur:

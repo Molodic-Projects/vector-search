@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   db:
     image: pgvector/pgvector:pg16
@@ -12,7 +11,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   app:
-    build: .
+    build: ./VectorSearchService
     ports:
       - "8000:8000"
     depends_on:
@@ -20,7 +19,7 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     volumes:
-      - .:/app
+      - ./VectorSearchService:/app
     working_dir: /app
 
 volumes:
